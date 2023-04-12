@@ -1,42 +1,42 @@
 var weekDays = $('#WeekDays');
 var historyDisplayEL = $('#search-history');
-var currentDay = $('#current');
+var currentDays = $('#current');
 var currentDate =  dayjs().format(' [-] MMM DD, YYYY [-]');
 var searchButtonEL = $('#search-button')
 var userInputEl = $('#city-selected');
+var APIKey = "cf9bfc96d61561a057ddd5bc376b18f7"
 
-
-//load first page hide items if search history stored show history
+// pull from local
 function searchHistory(){
-    // assign value if local storage has city history search
     var searchHistory = pullLS();
 
     if (searchHistory){
             for(i=0;i< searchHistory.length ;i++){
                 var buttonHistory = $('<button>');
-                buttonHistory.addClass('btn btn-history');
+                buttonHistory.addClass('button button-history');
                 buttonHistory.text(searchHistory[i]);
                 historyDisplayEL.append(buttonHistory);
-                buttonHistory.on('click',historyButtonClick);
+                buttonHistory.on('click',historyDisplayEL);
             }
             historyDisplayEL.children().attr('style','visibility:visible');
             
 
         }
 }
-//load last entered city in search history
+
+
 function prevInputVal(){
     var searchHistory = pullLS();
     var prevInput = searchHistory.slice(-1);
     var buttonHistory = $('<button>');
-    buttonHistory.addClass('btn btn-history');
+    buttonHistory.addClass('button button-history');
     buttonHistory.text(prevInput);
     historyDisplayEL.append(buttonHistory);
     historyDisplayEL.children().attr('style','visibility:visible');
     buttonHistory.on('click',historyButtonClick);
 
 }
-//load page when button history clicked
+
 function historyButtonClick(event){
     event.preventDefault();
     var currentSelected = event.currentTarget.firstChild.textContent.trim();
@@ -55,12 +55,13 @@ function pullLS(){
 }
 
 //fetch weather API  
+
+
 function locationSelector(searchLocation){
    
-    var fetchURL = 'https://api.openweathermap.org/geo/1.0/direct?q='+searchLocation+'ae365f2f4356784124a0cf127763905e';
+    var geoURL =  'https://api.openweathermap.org/geo/1.0/direct?q='+searchLocation+',US&limit=1&appid='+APIKey
 
-//fetch city selected detauks
-    fetch(fetchURL)
+    fetch(geoURL)
     .then(function(response){
         // console.log("type", typeof response)
         // console.log("object", response)
@@ -69,8 +70,8 @@ function locationSelector(searchLocation){
     .then(function(data){ 
         var lat = data[0].lat;
         var lon = data[0].lon;
-        var forecastRequest = 'https://api.openweathermap.org/data/2.5/forecast?lat='+lat+'&lon='+lon+'ae365f2f4356784124a0cf127763905e';
-        var currentWeather ='https://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'ae365f2f4356784124a0cf127763905e';
+        var forecastRequest = "https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&cnt=50&units=imperial&appid="+APIKey;
+        var currentWeather ="https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&units=imperial&appid="+APIKey;
 
         // fetche current weather
         fetch(currentWeather)
@@ -78,12 +79,11 @@ function locationSelector(searchLocation){
             return currentResponse.json();
 
         })
-        // display data in elements
         .then(function(currentOutput){
 
             currentDays.children('h3').text(currentOutput.name);
             currentDays.children('h3').append(currentDate);
-            //if more than one icon 
+
             if(currentOutput.weather.length > 0 ){
                 for(var i=0; i < currentOutput.weather.length; i++){
                    var imageSrc = 'https://openweathermap.org/img/wn/'+currentOutput.weather[i].icon+'@2x.png';
@@ -100,7 +100,6 @@ function locationSelector(searchLocation){
             currentDays.children().eq(3).text('Humidity: '+currentOutput.main.humidity+' %');
         })
         
-        // fetch five day forecast
         fetch(forecastRequest)
         .then(function(forecastResponse){
             return forecastResponse.json();
@@ -108,7 +107,7 @@ function locationSelector(searchLocation){
         })
         .then(function(forecastOutput){
              var weeklyList = [];
-             //incremented variable i by 8 to get just one time set for each day 
+
             for (var i=0; i < forecastOutput.list.length ; i+=8){
                 weeklyList.push(forecastOutput.list[i])
             }
@@ -133,7 +132,7 @@ function locationSelector(searchLocation){
     
 }
 
-//search weather for city entered and button search clicked
+
 function searchButton(event){
     event.preventDefault();
     
@@ -147,7 +146,7 @@ function searchButton(event){
 function commitLS(searchLocation){
     var listsearchHist = pullLS();
     listsearchHist.push(searchLocation);
-    localStorage.setItem("searchHist", JSON.stringify(listsearchHist));
+    localStorage.setItem("searchHistory", JSON.stringify(listsearchHist));
 }
 
 // call when page loads 

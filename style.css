@@ -1,28 +1,28 @@
 :root{
     /* color palette from palettes.shecodes.io/palettes/1313 */
-    --bgcolormain :#142d4c;
-    --bgcolorsecond:#385170;
-    --buttonsearch: #9fd3c7;
-    --buttonhistory: #ececec;
+    --bgcolor :#314154;
+    --bgcolorsecond:#698bb4;
+    --search: #9fd3c7;
+    --history: #ececec;
 }
 
 header{
-    background-color: var(--bgcolormain);
-    color:var(--buttonhistory)
+    background-color: var(--bgcolor);
+    color:var(--history)
 }
 .button-search{
-    background-color:var(--buttonsearch);
-    color: var(--buttonhistory);
+    background-color:var(--search);
+    color: var(--history);
     
 }
 .button-history{
-    background-color: var(--buttonhistory);
+    background-color: var(--history);
 }
 #current-day{
     visibility: hidden;
 }
 #search-history {
-    display: none;
+    visibility: hidden;
 }
 
 #WeekDays{
