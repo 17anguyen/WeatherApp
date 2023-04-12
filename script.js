@@ -135,13 +135,16 @@ function locationSelector(searchLocation){
 
 function searchButton(event){
     event.preventDefault();
-    
+
     var inputValue = userInputEl.val();
     locationSelector(inputValue);
     commitLS(inputValue);
     prevInputVal();
     userInputEl.val('');
+
 }
+
+
 //save city to local storage 
 function commitLS(searchLocation){
     var listsearchHist = pullLS();
@@ -154,6 +157,19 @@ searchHistory()
 
 //search button click
 searchButtonEL.on('click',searchButton)
+  $(searchButtonEL).ready(function() {
+    $("#search-button").keyup(function(event) {
+        if (event.which === 13) {
+            $("#search-button").click();
+            console.log("clicked2");
+        }
+    });
+ 
+    $("#search-button").click(function() {
+        searchButton();
+        console.log("clicked1");
+    })
+});
 
 
 // var array= [1,2,3]
