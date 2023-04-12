@@ -4,7 +4,7 @@ var currentDays = $('#current');
 var currentDate =  dayjs().format(' [-] MMM DD, YYYY [-]');
 var searchButtonEL = $('#search-button')
 var userInputEl = $('#city-selected');
-var APIKey = "cf9bfc96d61561a057ddd5bc376b18f7"
+var APIKey = "ae365f2f4356784124a0cf127763905e"
 
 // pull from local
 function searchHistory(){
@@ -135,7 +135,6 @@ function locationSelector(searchLocation){
 
 function searchButton(event){
     event.preventDefault();
-
     var inputValue = userInputEl.val();
     locationSelector(inputValue);
     commitLS(inputValue);
