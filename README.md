@@ -1,5 +1,5 @@
-# Weather-page
-a weather dashboard with the ability to search by city choice
+# Weather Dashboard Application
+A weather dashboard with the ability to search by city choice by creating a fetch request to an API
 url for usage: https://17anguyen.github.io/Weather-page/
 
 ## worked with
